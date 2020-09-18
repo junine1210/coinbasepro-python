@@ -756,6 +756,14 @@ class AuthenticatedClient(PublicClient):
         return self._send_message('post', '/position/close',
                                   data=json.dumps(params))
 
+    def get_deposit_address(self, currency):
+        params = {}
+
+        for account_ in self.get_coinbase_accounts():
+            if account_['currency'] == currency:
+                return self._send_message('post', '/coinbase-accounts/' + account_['id'] + '/addresses',
+                                          data=json.dumps(params))
+
     def deposit(self, amount, currency, payment_method_id):
         """ Deposit funds from a payment method.
 
